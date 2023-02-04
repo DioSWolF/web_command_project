@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacts book</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
+</head>
+<body>
+ <h1>Contacts book</h1>
+ <h1>{{ msg }}</h1>
+    <main class="container">
+      <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px" >
+        <ul>
+          <li><a href="{% url 'contact_book:create_contact' %}" role="button">Create contact</a></li>
+          <li><a href="{% url 'contact_book:change_contact' %}" role="button">Change contact</a></li>
+          <li><a href="{% url 'contact_book:find_contact' %}" role="button">Find contact</a></li>
+          <li><a href="{% url 'contact_book:delete_contact' %}" role="button">Delete contact</a></li>
+          <li><a href="{% url 'contact_book:get_birthday_contacts' %}" role="button">Get birthday contact</a></li>
+        </ul>
+       </nav>
+    </main>
+</body>
+</html>
