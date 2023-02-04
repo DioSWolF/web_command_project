@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p1>File list</p1>
+    <div></div>
+    <p2>{{video}}</p2>
+    <div></div>
+    <p2>{{images}}</p2>
+    <ul>
+        <p2>Videos</p2>
+        {% for file in video %}
+            <div>{{file.name}}</div>
+            <div>
+                <a href="#">
+                    <video width="320" height="240" controls muted>
+                      <source src="{{file.data.url}}" type="video/mp4">
+                      <source src="{{file.data.url}}" type="video/ogg">
+                        Your browser does not support the video tag.
+                    </video>
+                </a>
+            </div>
+        {% endfor %}
+        {% for file in audio %}
+            <div>{{file.name}}</div>
+            <div>
+                <a href="#">
+                    <audio controls>
+                    <source src="{{file.data.url}}" type="audio/mp3">
+                    <source src="{{file.data.url}}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                    </audio>
+                    </video>
+                </a>
+            </div>
+        {% endfor %}
+        {% for image in images %}
+            <p2>Hello world!</p2>
+            <p3>{{image.name}}</p3>
+            <div>
+                <a href="#">
+                    <img src="{{image.data.url}}" width="200" height="200">
+                </a>
+            </div>
+        {% endfor %}
+        {% for image in images %}
+            <p2>Hello world!</p2>
+            <p3>{{image.name}}</p3>
+            <div>
+                <a href="#">
+                    <img src="{{image.data.url}}" width="200" height="200">
+                </a>
+            </div>
+        {% endfor %}
+        {% for file in documents %}
+            <p2>Hello world!</p2>
+            <p3>{{file.name}}</p3>
+            <div>
+                <p3>{{file.name}}</p3>
+                <a href="#">
+                    <img src="/media/doc.png" width="200" height="200">
+                </a>
+            </div>
+        {% endfor %}
+
+
+
+    </ul>
+</body>
+</html>
