@@ -6,7 +6,7 @@ from .forms import RegisterForm, LoginForm, ProfileForm
 
 
 def main(request):
-    return render(request, 'users/base.html')
+    return render(request, "users/base.html")
 
 
 def signup_user(request):
@@ -19,8 +19,8 @@ def signup_user(request):
             form.save()
             return redirect(to="users:main")
         else:
-            return render(request, 'users/register.html', context={'form': form})
-    return render(request, 'users/register.html', context={'form': RegisterForm()})
+            return render(request, "users/register.html", context={"form": form})
+    return render(request, "users/register.html", context={"form": RegisterForm()})
 
 
 def login_user(request):
@@ -28,14 +28,16 @@ def login_user(request):
         return redirect(to="users:main")
 
     if request.method == "POST":
-        user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        user = authenticate(
+            username=request.POST["username"], password=request.POST["password"]
+        )
         if user is None:
-            messages.error(request, 'Username or password didn\'t match')
+            messages.error(request, "Username or password didn't match")
             return redirect(to="users:login")
         login(request, user)
         return redirect(to="users:main")
 
-    return render(request, 'users/login.html', context={'form': LoginForm()})
+    return render(request, "users/login.html", context={"form": LoginForm()})
 
 
 @decorators.login_required
@@ -50,7 +52,11 @@ def profile(request):
         form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your profile is updated!')
+            messages.success(request, "Your profile is updated!")
             return redirect(to="users:profile")
 
-    return render(request, 'users/profile.html', context={'form': ProfileForm(instance=request.user.profile)})
+    return render(
+        request,
+        "users/profile.html",
+        context={"form": ProfileForm(instance=request.user.profile)},
+    )

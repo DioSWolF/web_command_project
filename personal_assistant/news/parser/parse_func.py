@@ -70,7 +70,7 @@ class FindArticle:
                     self.text_content = {
                         "header": article.name,
                         "content": content,
-                        "news_type":  article.news_type,
+                        "news_type": article.news_type,
                     }
 
 
