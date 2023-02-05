@@ -24,6 +24,7 @@ urlpatterns = [
     path('contact_book/', include('contact_book.urls')),
     path('', include('users.urls')),
     path('', include('file_storage.urls')),
+    path('news/', include('news.urls')),
 
 ]
 
