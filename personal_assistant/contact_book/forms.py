@@ -3,9 +3,11 @@ from . import models
 
 
 class ContactForm(ModelForm):
+
     first_name = CharField(
         min_length=3, max_length=25, required=True, widget=TextInput()
     )
+
     last_name = CharField(min_length=3, max_length=25, required=False)
     phone = CharField(max_length=25, required=False)
     email = CharField(max_length=25, required=False)
@@ -15,6 +17,7 @@ class ContactForm(ModelForm):
 
     class Meta:
         model = models.ContactBook
+
         fields = [
             "first_name",
             "last_name",

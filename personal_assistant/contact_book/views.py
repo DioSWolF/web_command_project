@@ -14,6 +14,7 @@ def checker(request):
 
 
 def get_contact_book(request):
+
     return render(
         request,
         "contact_book/main_contacts_book.html",
@@ -26,6 +27,7 @@ def create_contact(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
+
             return redirect(to="contact_book:contacts_book")
         else:
             return render(
@@ -38,6 +40,7 @@ def create_contact(request):
 
 def datail(request, contact_id):
     contact = get_object_or_404(ContactBook, pk=contact_id)
+
     return render(request, "contact_book/detail.html", context={"contact": contact})
 
 
