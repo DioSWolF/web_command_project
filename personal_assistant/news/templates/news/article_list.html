@@ -1,0 +1,10 @@
+{% extends "news/base.html" %} {% block content %}
+
+<form method="GET">
+{% for artc_type in artical %}
+<ul>
+<li><a href="/news/read_article/{{artc_type.id}}"  role="text" > {{ artc_type.name }} </a></li>
+</ul>
+{% endfor %}
+</form>
+{% endblock %}
