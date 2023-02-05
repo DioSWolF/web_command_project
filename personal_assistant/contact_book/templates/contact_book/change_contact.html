@@ -6,6 +6,47 @@
 </head>
 <body>
  <h1>Change contact</h1>
- <h1>{{ msg }}</h1>
+<form method="POST">
+    {% csrf_token %}
+    <div style="padding: 10px">
+        <label>Enter first name: </label>
+        <input type="text" name="first_name" value={{contact.first_name}} />
+        <span>{{form.errors.first_name}}</span>
+    </div>
+    <div style="padding: 10px">
+        <label>Enter last name: </label>
+        <input type="text" name="last_name" value={{contact.last_name}} />
+        <span>{{form.errors.last_name}}</span>
+    </div>
+    <div style="padding: 10px">
+        <label>Enter phone: </label>
+        <input type="text" name="phone" value={{contact.phone}} />
+        <span>{{form.errors.phone}}</span>
+    </div>
+    <div style="padding: 10px">
+        <label>Enter email: </label>
+        <input type="text" name="email" value={{contact.email}} />
+        <span>{{form.errors.email}}</span>
+    </div>
+        <div style="padding: 10px">
+        <label>Enter address: </label>
+        <input type="text" name="address" value={{contact.address}} />
+        <span>{{form.errors.address}}</span>
+    </div>
+        <div style="padding: 10px">
+        <label>Enter description: </label>
+        <input type="text" name="description" value={{contact.description}} />
+        <span>{{form.errors.description}}</span>
+    </div>
+        <div style="padding: 10px">
+        <label>Enter birthday (YYYY-MM-DD): </label>
+        <input type="text" name="birthday" value={{birthday_str}} />
+        <span>{{form.errors.birthday}}</span>
+    </div>
+    <div class="grid">
+        <button type="submit">Submit</button>
+        <button type="reset" class="secondary">Reset</button>
+    </div>
+</form>
 </body>
 </html>
