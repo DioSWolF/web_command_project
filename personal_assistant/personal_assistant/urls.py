@@ -20,12 +20,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('contact_book/', include('contact_book.urls')),
-    path('', include('users.urls')),
-    path('', include('file_storage.urls')),
-    path('news/', include('news.urls')),
-
+    path("admin/", admin.site.urls),
+    path("contact_book/", include("contact_book.urls")),
+    path("", include("users.urls")),
+    path("", include("file_storage.urls")),
+    path("news/", include("news.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
