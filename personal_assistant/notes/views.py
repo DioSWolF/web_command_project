@@ -5,7 +5,21 @@ from .models import Tag, Note
 
 def main(request):
     notes = Note.objects.all()
-    return render(request, 'notes/index.html', {"notes": notes})
+    tags = Tag.objects.all()
+    try:
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            new_note = form.save()
+
+            choice_tags = Tag.objects.filter(name__in=request.POST.getlist('tags'))
+            for tag in choice_tags.iterator():
+                new_note.tags.add(tag)
+
+            return redirect(to='notes:main')
+        else:
+            return render(request, 'notes/index.html', {"notes":notes,"tags": tags, 'form': form})
+    except:
+        return render(request, 'notes/index.html', {"notes": notes})
 
 
 def tag(request):
