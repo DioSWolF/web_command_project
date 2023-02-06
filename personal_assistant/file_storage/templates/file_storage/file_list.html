@@ -1,0 +1,54 @@
+
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'file_storage/styles.css' %}">
+<div class="container">
+
+    <div class="row">
+        {% for folder in folders %}
+            <div class="col-xl-2 bg-transparent">
+                <div class="card">
+                    <a href="/{{folder.name}}/">
+                  <img class="card-img-top"  src="{{folder.path_to_image}}" alt="Card image cap">
+                  <div class="card-body">
+                    <h5 class="card-title text-center">{{folder.name}}</h5>
+                  </div>
+                        </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row d-flex justify-content-center mt-1000">
+        <div class="col-xl-6 bg-transparent">
+            <div class="card mx-auto" >
+                <div class="title">
+                    <h1>Drop file to upload</h1>
+                </div>
+                <form action="#" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="dropzone mx-auto">
+                        <img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" />
+                        <input type="file" multiple  name="upload_files" class="upload-input" />
+                    </div>
+                    <button type="submit" class="btn mx-auto"  value="save">Upload file</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% if uploaded %}
+
+
+            <h2>Saved files</h2>
+            <div class="list-group">
+                {% for file in uploaded %}
+                    <a href="/file/{{file.id}}" class="list-group-item list-group-item-action">{{file.name}}</a>
+                {% endfor %}
+
+            </div>
+
+
+    {% endif %}
+</div>
+{% endblock content %}

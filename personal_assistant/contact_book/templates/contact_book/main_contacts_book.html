@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacts book</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
+</head>
+<body>
+ <h1>ПРОБА (шаблон і стилі будуть змінені)</h1>
+ <h1>{{ msg }}</h1>
+    <main class="container">
+      <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px" >
+        <ul>
+          <li><a href="{% url 'contact_book:create_contact' %}" role="button">Create contact</a></li>
+          <li><a href="{% url 'contact_book:find_contact' %}" role="button">Find contact</a></li>
+          <li><a href="{% url 'contact_book:get_birthday_contacts' %}" role="button">Get birthday contact</a></li>
+        </ul>
+       </nav>
+    </main>
+      {% for contact in contacts%}
+      <ul>
+        <li>
+          {{contact.id}}
+          <a href="{% url 'contact_book:detail' contact.id %}" role="button" class="outline">{{contact.first_name}} {{contact.last_name}}</a>
+          <a href="{% url 'contact_book:change_contact' contact.id %}" role="button">Change2</a>
+          <a href="{% url 'contact_book:delete_contact' contact.id %}" role="button" class="contrast">Delete</a>
+        </li>
+      </ul>
+      {% endfor %}
+</body>
+</html>
+

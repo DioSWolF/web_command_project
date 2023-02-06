@@ -1,0 +1,16 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <form action="" method="POST" enctype="multipart/form-data">
+<!--        <input type="text" name="filename"  placeholder="enter your file name" >-->
+        <input type="file" multiple name="upload_files" >
+        {% csrf_token %}
+        <button type="submit">Upload</button>
+    </form>
+
+    {% for d in data %}
+
+   <p> {{d.f_name}} ---- <img width="50" src="{{d.myfiles.url}}"></p>
+
+    {% endfor %}
+{% endblock content %}
