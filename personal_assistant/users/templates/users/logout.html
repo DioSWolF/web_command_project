@@ -1,0 +1,12 @@
+{% extends "users/base.html" %}
+{% block content %}
+    <h1>You have been logged out</h1>
+
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                <a class="nav-item nav-link" href="{% url 'users:login' %}">Log In Again</a>
+                <a class="nav-item nav-link" href="{% url 'users:signup' %}">Register In Again</a>
+                <a class="nav-item nav-link" href="{% url 'users:main' %}">Exit In Main Page</a>
+            </small>
+        </div>
+{% endblock content %}

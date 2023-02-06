@@ -23,11 +23,10 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
             <div class="container">
-
-                <a class="navbar-brand mr-4" href="news/today">News</a>
-                <a class="navbar-brand mr-4" href="contact_book/">Contact book</a>
-                <a class="navbar-brand mr-4" href="#">Notes</a>
-                <a class="navbar-brand mr-4" href="#">File storage</a>
+                <a class="navbar-brand mr-5" href="news/today">News</a>
+                <a class="navbar-brand mr-5" href="contact_book/">Contact book</a>
+                <a class="navbar-brand mr-5" href="#">Notes</a>
+                <a class="navbar-brand mr-5" href="#">File storage</a>
                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                   </button>
@@ -37,8 +36,8 @@
                         <!-- Navbar Right Side -->
                         <div class="navbar-nav">
                             {% if user.is_authenticated %}
-                                <a class="nav-item nav-link" href="{% url 'users:profile' %}">Profile</a>
-                                <a class="nav-item nav-link" href="#">Logout</a>
+                                <a class="nav-item nav-link" href="{% url 'users:profile' %}"><b>{{user.username}}</b></a>
+                                <a class="nav-item nav-link" href="{% url 'users:logout' %}">Logout</a>
                             {% else %}
                                 <a class="nav-item nav-link" href="{% url 'users:login' %}">Login</a>
                                 <a class="nav-item nav-link" href="{% url 'users:signup' %}">Register</a>
