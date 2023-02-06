@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+
     "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     "news.apps.NewsConfig",
     "notes.apps.NotesConfig",
     "users.apps.UsersConfig",
+    "django_bootstrap5",
+
 ]
 
 MIDDLEWARE = [
