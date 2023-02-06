@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'news.apps.NewsConfig',
     'notes.apps.NotesConfig',
     'users.apps.UsersConfig',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [

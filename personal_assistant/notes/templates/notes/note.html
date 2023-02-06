@@ -1,0 +1,59 @@
+{% extends "notes/base.html" %}
+
+{% block content %}
+
+<form method="POST" action="{% url 'notes:note' %}">
+    {% csrf_token %}
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Create note
+    </button>
+    <div style="padding: 10px">
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Create note</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <form method="POST" action="{% url 'notes:note' %}">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Note name</span>
+                                <input type="text" class="form-control" required minlength="5" maxlength="64"
+                                       placeholder="1-64 symbols"
+                                       aria-label="name"
+                                       aria-describedby="basic-addon1" name="name">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group">
+                                    <span class="input-group-text">Note</span>
+                                    <textarea class="form-control" aria-label="Note description"
+                                              name="description" required minlength="10" maxlength="4096"
+                                              placeholder="max 4096 symbols"></textarea>
+                                </div>
+
+                                <div style="padding-top: 10px">
+                                    <label class="input-group-text" for="tag_select"> Select tags:
+                                        <select class="form-select" multiple aria-label="multiple select example"
+                                                aria-describedby="basic-addon2" id="tag_select" required>
+                                            {% for tag in tags %}
+                                            <option value="{{tag.name}}">{{tag.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </label>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Create note</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

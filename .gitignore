@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.idea/
+personal_assistant/notes/templates/notes/note_backup.html
+personal_assistant/notes/templates/notes/index_backup.html
+personal_assistant/notes/templates/notes/note_backup.html
