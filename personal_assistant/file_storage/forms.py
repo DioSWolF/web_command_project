@@ -1,6 +1,7 @@
 from django.forms import ModelForm
-from .models import Image, File
+from .models import File
 from django import forms
+
 
 
 class ImageForm(ModelForm):

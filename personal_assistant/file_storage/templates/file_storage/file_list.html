@@ -1,73 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <p1>File list</p1>
-    <div></div>
-    <p2>{{video}}</p2>
-    <div></div>
-    <p2>{{images}}</p2>
-    <ul>
-        <p2>Videos</p2>
-        {% for file in video %}
-            <div>{{file.name}}</div>
-            <div>
-                <a href="#">
-                    <video width="320" height="240" controls muted>
-                      <source src="{{file.data.url}}" type="video/mp4">
-                      <source src="{{file.data.url}}" type="video/ogg">
-                        Your browser does not support the video tag.
-                    </video>
-                </a>
+
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'file_storage/styles.css' %}">
+<div class="container">
+
+    <div class="row">
+        {% for folder in folders %}
+            <div class="col-xl-2 bg-transparent">
+                <div class="card">
+                    <a href="/{{folder.name}}/">
+                  <img class="card-img-top"  src="{{folder.path_to_image}}" alt="Card image cap">
+                  <div class="card-body">
+                    <h5 class="card-title text-center">{{folder.name}}</h5>
+                  </div>
+                        </a>
+                </div>
             </div>
         {% endfor %}
-        {% for file in audio %}
-            <div>{{file.name}}</div>
-            <div>
-                <a href="#">
-                    <audio controls>
-                    <source src="{{file.data.url}}" type="audio/mp3">
-                    <source src="{{file.data.url}}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                    </audio>
-                    </video>
-                </a>
+    </div>
+    <div class="row d-flex justify-content-center mt-1000">
+        <div class="col-xl-6 bg-transparent">
+            <div class="card mx-auto" >
+                <div class="title">
+                    <h1>Drop file to upload</h1>
+                </div>
+                <form action="#" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="dropzone mx-auto">
+                        <img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" />
+                        <input type="file" multiple  name="upload_files" class="upload-input" />
+                    </div>
+                    <button type="submit" class="btn mx-auto"  value="save">Upload file</button>
+                </form>
             </div>
-        {% endfor %}
-        {% for image in images %}
-            <p2>Hello world!</p2>
-            <p3>{{image.name}}</p3>
-            <div>
-                <a href="#">
-                    <img src="{{image.data.url}}" width="200" height="200">
-                </a>
-            </div>
-        {% endfor %}
-        {% for image in images %}
-            <p2>Hello world!</p2>
-            <p3>{{image.name}}</p3>
-            <div>
-                <a href="#">
-                    <img src="{{image.data.url}}" width="200" height="200">
-                </a>
-            </div>
-        {% endfor %}
-        {% for file in documents %}
-            <p2>Hello world!</p2>
-            <p3>{{file.name}}</p3>
-            <div>
-                <p3>{{file.name}}</p3>
-                <a href="#">
-                    <img src="/media/doc.png" width="200" height="200">
-                </a>
-            </div>
-        {% endfor %}
+        </div>
+    </div>
+    {% if uploaded %}
 
 
+            <h2>Saved files</h2>
+            <div class="list-group">
+                {% for file in uploaded %}
+                    <a href="/file/{{file.id}}" class="list-group-item list-group-item-action">{{file.name}}</a>
+                {% endfor %}
 
-    </ul>
-</body>
-</html>
+            </div>
+
+
+    {% endif %}
+</div>
+{% endblock content %}
