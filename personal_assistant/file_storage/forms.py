@@ -3,11 +3,14 @@ from .models import File
 from django import forms
 
 
+
+class ImageForm(ModelForm):
+    class Meta:
+        model = Image
+        fields = ["data", "name", "owner"]
+
+
 class MediaForm(ModelForm):
     class Meta:
         model = File
-        fields = [
-            'data',
-            'owner'
-        ]
-
+        fields = ["data", "owner"]

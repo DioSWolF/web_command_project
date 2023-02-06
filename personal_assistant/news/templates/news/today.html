@@ -1,0 +1,17 @@
+{% extends "news/base.html" %}
+
+{% block content %}
+
+
+{% for artc_type, artic_list in articles.items %}
+<ul>
+<li><h2><a href="/news/articles_list/{{artc_type}}"> {{ artc_type }} </a></h2></li>
+<ul>
+{% for artc in artic_list %}
+<li><a href="/news/read_article/{{artc.id}}"> {{ artc }} </a></li>
+{% endfor %}
+</ul>
+</ul>
+{% endfor %}
+
+{% endblock %}

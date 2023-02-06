@@ -3,9 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>create_contact</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
 </head>
 <body>
  <h1>Create contact</h1>
- <h1>{{ msg }}</h1>
+
+<form method="POST" action="{% url 'contact_book:create_contact' %}">
+    {% csrf_token %}
+    <div style="padding: 10px">
+        <label>Enter first name: </label>
+        {{form.first_name}}
+        <span>{{form.errors.first_name}}</span>
+    </div>
+    <div style="padding: 10px">
+        <label>Enter last name: </label>
+        {{form.last_name}}
+        <span>{{form.errors.last_name}}</span>
+    </div>
+    <div style="padding: 10px">
+        <label>Enter phone: </label>
+        {{form.phone}}
+        <span>{{form.errors.phone}}</span>
+    </div>
+    <div style="padding: 10px">
+        <label>Enter email: </label>
+        {{form.email}}
+        <span>{{form.errors.email}}</span>
+    </div>
+        <div style="padding: 10px">
+        <label>Enter address: </label>
+        {{form.address}}
+        <span>{{form.errors.address}}</span>
+    </div>
+        <div style="padding: 10px">
+        <label>Enter description: </label>
+        {{form.description}}
+        <span>{{form.errors.description}}</span>
+    </div>
+        <div style="padding: 10px">
+        <label>Enter birthday (YYYY-MM-DD): </label>
+        {{form.birthday}}
+        <span>{{form.errors.birthday}}</span>
+    </div>
+    <div class="grid">
+        <button type="submit">Submit</button>
+        <button type="reset" class="secondary">Reset</button>
+    </div>
+</form>
+
 </body>
 </html>

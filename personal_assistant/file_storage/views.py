@@ -5,8 +5,22 @@ from .models import File
 from django.http import HttpResponseRedirect
 
 
+
+def upload_image(request):
+    print(f"upload_image: {request.method}")
+
+    if request.method == "POST":
+        form = ImageForm(request.POST, request.FILES)
+        image = form.save(commit=False)
+        image.owner = request.user
+        image.save()
+        return HttpResponseRedirect("/images/")
+    return render(request, "file_storage/upload_image.html", {"form": ImageForm})
+
+
+
 def upload_media(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = MediaForm(request.POST, request.FILES)
         if form.is_valid():
             media = form.save()
@@ -14,15 +28,29 @@ def upload_media(request):
             media.save()
             print(f"primary key: {media.id}")
             # return HttpResponseRedirect('/upload_media/')
-            return redirect(f'/file/{media.id}/')
-        return HttpResponseRedirect('/upload_media/')
+            return redirect(f"/file/{media.id}/")
+        return HttpResponseRedirect("/upload_media/")
 
-    return render(request, 'file_storage/upload_media.html', {'form': MediaForm})
+    return render(request, "file_storage/upload_media.html", {"form": MediaForm})
+
 
 
 class FileDetailView(DetailView):
     print("detail view")
     model = File
+
+class UserImagesListView(ListView):
+    model = Image
+    template_name = "file_storage/images"
+    context_object_name = "images"
+
+
+class UserFilesListView(ListView):
+    model = File
+    template_name = "file_storage/files"
+    context_object_name = "files"
+
+
 
     def post(self, request, *args, **kwargs):
         file = self.get_object()
@@ -37,7 +65,9 @@ class FileDetailView(DetailView):
 
 class FileUpdateView(UpdateView):
     model = File
-    fields = ['name', ]
+    fields = [
+        "name",
+    ]
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -85,6 +115,7 @@ folders = [images, audio, video, documents, other]
 
 def file_list(request):
     user = request.user
+
     data = {"folders": []}
     for folder in folders:
         query = File.objects.filter(owner=user)\
@@ -187,3 +218,5 @@ def send_files(request):
         "data": File.objects.all(),
     }
     return render(request, "file_storage/upload.html", context)
+
+    
