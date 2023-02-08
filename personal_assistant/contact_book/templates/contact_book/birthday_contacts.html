@@ -6,6 +6,30 @@
 </head>
 <body>
  <h1>get_birthday_contacts</h1>
- <h1>{{ msg }}</h1>
+<form method="POST">
+    {% csrf_token %}
+    <div style="padding: 10px">
+        <label>Enter date: </label>
+        <input type="text" name="days_to" value="7" />
+        <span>{{form.errors.birthday}}</span>
+    </div>
+    <div class="grid">
+        <button type="submit">Submit</button>
+        <button type="reset" class="secondary">Reset</button>
+    </div>
+
+</form>
+      {% for contact in contacts%}
+      <ul>
+        <li>
+          {% for contact_ in contact%}
+            <a href="{% url 'contact_book:detail' contact_.id %}" role="button" class="outline">{{contact_.first_name}} {{contact_.last_name}}</a>
+            <a href="{% url 'contact_book:change_contact' contact_.id %}" role="button">Change</a>
+          {% endfor %}
+        </li>
+      </ul>
+      {% endfor %}
+
+
 </body>
 </html>
