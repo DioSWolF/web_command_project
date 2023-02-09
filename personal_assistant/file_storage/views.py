@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from .forms import MediaForm
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
-from .models import File
+from .models import File, Image
 from django.http import HttpResponseRedirect
 
 
