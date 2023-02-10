@@ -1,4 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:700,300);
+/*@import url(https://fonts.googleapis.com/css?family=Open+Sans:700,300);*/
+
 
 .frame {
 	position: absolute;
@@ -16,6 +17,7 @@
 	font-family: "Open Sans", Helvetica, sans-serif;
 }
 
+/*
 .center {
 	position: absolute;
 	top: 50%;
@@ -31,13 +33,15 @@
 	justify-content: space-evenly;
 	flex-direction: column;
 }
+*/
 
 .title {
 	width: 100%;
-	height: 50px;
+	/*height: 50px; */
 	border-bottom: 1px solid #999;
 	text-align: center;
 }
+
 /*
 h1 {
 	font-size: 16px;
@@ -46,6 +50,7 @@ h1 {
 	/* color: #FF00FF;
 }
 */
+
 .dropzone {
 	width: 100px;
 	height: 80px;
@@ -67,8 +72,10 @@ h1 {
 	opacity: 0;
 }
 
-.btn {
+
+.btn_upload {
 	display: block;
+
 	width: 140px;
 	height: 40px;
 	background: darkmagenta;
@@ -85,3 +92,57 @@ h1 {
 	box-shadow: 0 3px 0 0 deeppink;
 }
 
+/* For image list */
+
+/* This default styling works for large screen devices (All devices with resolution of 1200px or above), for example laptops */
+
+.image_div {
+max-height: 300px;
+}
+
+.image_body {
+height: 200px;
+}
+
+/* This media query works for medium screen devices (All devices with resolution from 992px to 1199px), for example Computers */
+
+@media (min-width: 992px) and (max-width: 1199px){
+  .image_div{
+    max-height: 300px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px){
+  .image_body{
+    height: 200px;
+  }
+}
+/* This media query works for small screen devices (All devices with resolution from 768px to 991px), for example tablets */
+
+@media (min-width: 768px) and (max-width: 991px){
+  .image_div{
+    max-height: 300px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px){
+  .image_body{
+    height: 200px;
+  }
+}
+
+/* This media query works for extra small screen devices (All devices with below resolution of 767px), for example Iphones, Smart Phones */
+
+@media (max-width: 767px){
+  .image_div{
+    max-height: 350px;
+    max-width: 300px;
+    margin: auto;
+  }
+}
+@media (max-width: 767px){
+  .image_body{
+    height: 200px;
+    margin: auto;
+  }
+}

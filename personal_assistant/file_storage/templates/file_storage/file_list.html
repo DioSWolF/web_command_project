@@ -3,52 +3,121 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'file_storage/styles.css' %}">
-<div class="container">
+<link rel="stylesheet" href="{% static 'file_storage/main.css' %}">
 
+<div class="container">
     <div class="row">
         {% for folder in folders %}
             <div class="col-xl-2 bg-transparent">
                 <div class="card">
                     <a href="/{{folder.name}}/">
-                  <img class="card-img-top"  src="{{folder.path_to_image}}" alt="Card image cap">
-                  <div class="card-body">
-                    <h5 class="card-title text-center">{{folder.name}}</h5>
-                  </div>
-                        </a>
+                      <img class="card-img-top"  src="{{folder.path_to_image}}" alt="Card image cap">
+                      <div class="card-body">
+                          <h5 class="card-title text-center">{{folder.name}} ({{folder.num_of_files}})</h5>
+                      </div>
+                    </a>
                 </div>
             </div>
         {% endfor %}
     </div>
-    <div class="row d-flex justify-content-center mt-1000">
-        <div class="col-xl-6 bg-transparent">
-            <div class="card mx-auto" >
-                <div class="title">
-                    <h1>Drop file to upload</h1>
+</div>
+<div class="container">
+    <div class="row  justify-content-center">
+        <div class=" col-xl-4 bg-transparent align-middle m-20 h-100" style="height: 100%;">
+            <div >
+                <div class="align-middle">
+                    <form action="#" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="formFile" class="form-label align-middle" ><b>Drop file to upload</b></label>
+                        <input name="upload_files" class="form-control" type="file"  multiple id="formFile" >
+                        <div class="align-middle">
+                            <button type="submit" class="btn btn-primary btn-sm"
+                                value="save" style="width: 140px; height: 40px;">Upload</button>
+                        </div>
+                    </form>
                 </div>
-                <form action="#" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="dropzone mx-auto">
-                        <img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" />
-                        <input type="file" multiple  name="upload_files" class="upload-input" />
-                    </div>
-                    <button type="submit" class="btn mx-auto"  value="save">Upload file</button>
-                </form>
             </div>
         </div>
+
+
+
+<!--        <div class="col-xl-5 bg-transparent mt-100">-->
+<!--            <div>-->
+<!--                <div class="title">-->
+<!--                    <h1>Drop file to upload</h1>-->
+<!--                </div>-->
+<!--                <form  action="#" method="post" style="height:25px;" enctype="multipart/form-data">-->
+<!--                    {% csrf_token %}-->
+<!--                    <div class="dropzone mx-auto">-->
+<!--                        <img  class="card-img-top" src="/media/upload.png" class="center"   />-->
+<!--                        <input type="file" multiple  name="upload_files" class="upload-input" />-->
+<!--                    </div>-->
+<!--                    <button type="submit" class="" value="save">Upload file</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div>
+        {% if memory_chart %}
+                <div class="col-xl-7 ">
+                    <a class="thumbnail" href="#">
+                        <img class="img-responsive" src="data:image/png;base64, {{memory_chart|safe}}" alt="">
+                    </a>
+                </div>
+        {% endif %}
+        </div>
+
     </div>
+
+</div>
+<div class="container" style=" margin:20 ; padding:0">
     {% if uploaded %}
-
-
-            <h2>Saved files</h2>
-            <div class="list-group">
-                {% for file in uploaded %}
-                    <a href="/file/{{file.id}}" class="list-group-item list-group-item-action">{{file.name}}</a>
-                {% endfor %}
-
-            </div>
-
-
+        <h2>Saved files</h2>
+        <div class="list-group">
+            {% for file in uploaded %}
+                <a href="/file/{{file.id}}" class="list-group-item list-group-item-action">{{file.name}}</a>
+            {% endfor %}
+        </div>
     {% endif %}
 </div>
+    {% if files %}
+        <div class="container" style=" margin:20 ; padding:0">
+            <form action="#" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="container">
+                    <div class="row">
+                        <p class="col-xl-1 pt-2"> Sort by:</p>
+                        <select name="filter_by" class="form-control col-xl-2">
+                            {% for value, text in filter_form.fields.filter_by.choices %}
+                                {% if value == filter_form.initial.filter_by %}
+                                    <option value="{{value}}" selected>{{text}}</option>
+                                {% else %}
+                                    <option value="{{value}}">{{text}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <div class="col-xl-2 pt-2 align-middle">
+                            <p>{{filter_form.reversed_sort}} Reverse</p>
+                        </div>
+                        <button type="submit" class=" col-xl-1 btn-primary h-75 pt-1 "  value="save">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    <div class="container" style=" margin:20 0;">
+        <li class="list-group-item ">
+            {%for file in files %}
+                <div class="d-flex w-100">
+                    <div class="col-xl-8"><a href="/file/{{file.id}}" >
+                    <h5>{{file.name}} </h5></a> </div>
+                    <div class="col-xl-3 "><p  >{{ file.date_posted|date:"F d, Y h:m" }} </p></div>
+                    <div class="col-xl-1 text-right"><p  class="float-right">{{file.size_str}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </li>
+    </div>
+    {% endif %}
+
 {% endblock content %}
