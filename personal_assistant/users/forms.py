@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth.models import User
 from django.forms import (
     ModelForm,
@@ -14,7 +15,7 @@ from .models import Profile
 
 class RegisterForm(UserCreationForm):
     username = CharField(
-        min_length=3, max_length=100, required=True, widget=TextInput()
+        min_length=3, max_length=50, required=True, widget=TextInput()
     )
     password1 = CharField(max_length=50, required=True, widget=PasswordInput())
     password2 = CharField(max_length=50, required=True, widget=PasswordInput())
@@ -30,7 +31,17 @@ class LoginForm(AuthenticationForm):
         fields = ["username", "password"]
 
 
-class ProfileForm(ModelForm):
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField(required=False)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    avatar = ImageField(widget=FileInput())
+
     class Meta:
         model = Profile
-        fields = ["avatar"]
+        fields = ['avatar']

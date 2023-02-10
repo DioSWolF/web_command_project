@@ -13,7 +13,8 @@ class ContactForm(ModelForm):
     email = CharField(max_length=25, required=False)
     address = CharField(min_length=3, max_length=150, required=False)
     description = CharField(min_length=3, max_length=150, required=False)
-    birthday = DateField(widget=DateInput(), required=False)
+    birthday = DateField(required=False)
+
 
     class Meta:
         model = models.ContactBook
@@ -28,3 +29,5 @@ class ContactForm(ModelForm):
             "birthday",
         ]
         exclude = ["is_active", "change_date", "owner"]
+
+

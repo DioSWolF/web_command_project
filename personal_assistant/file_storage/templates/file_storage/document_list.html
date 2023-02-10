@@ -1,0 +1,57 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container-fluid" style=" margin:0 auto;">
+    <div class="row" style=" margin: 0 auto 10;">
+        <a href="/files/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">All</button></a>
+        <a href="/images/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Images</button></a>
+        <a href="/video/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Video</button></a>
+        <a href="/audio/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Audio</button></a>
+        <a href="/documents/" style=" margin:0 5;"><button class="btn btn-warning btn-sm p-10 m-10" style="width: 100px">Documents</button></a>
+        <a href="/other/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Other</button></a>
+        <a href="/trash/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Trash</button></a>
+
+    </div>
+</div>
+
+{% if files %}
+    <div class="container" style=" margin:20 ; padding:0">
+        <form action="#" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="container">
+                <div class="row">
+                    <p class="col-xl-1 pt-2"> Sort by:</p>
+                    <select name="filter_by" class="form-control col-xl-2">
+                        {% for value, text in filter_form.fields.filter_by.choices %}
+                            {% if value == filter_form.initial.filter_by %}
+                                <option value="{{value}}" selected>{{text}}</option>
+                            {% else %}
+                                <option value="{{value}}">{{text}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <div class="col-xl-2 pt-2 align-middle">
+                        <p>{{filter_form.reversed_sort}} Reverse</p>
+                    </div>
+                    <button type="submit" class=" col-xl-1 btn-primary h-75 pt-1 "  value="save">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endif %}
+
+<div class="container">
+    <ul class="list-group">
+        {% for file in files %}
+            <li class="list-group-item ">
+                 <div class="d-flex w-100">
+                    <div class="col-xl-10"><a href="/file/{{file.id}}" >
+                    <h3>{{file.name}} </h3></a> </div>
+                     <div class="col-xl-2 text-right"><h3  class="float-right">{{file.size_str}}</h3></div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}
+

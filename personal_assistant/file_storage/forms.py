@@ -1,6 +1,7 @@
 from django.forms import ModelForm
-from .models import Image, File
+from .models import File, Image, ProfileData
 from django import forms
+
 
 
 class ImageForm(ModelForm):
@@ -13,3 +14,9 @@ class MediaForm(ModelForm):
     class Meta:
         model = File
         fields = ["data", "owner"]
+
+
+class FilterForm(ModelForm):
+    class Meta:
+        model = ProfileData
+        fields = ["filter_by", "reversed_sort"]

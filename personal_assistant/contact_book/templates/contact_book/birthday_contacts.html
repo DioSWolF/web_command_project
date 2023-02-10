@@ -1,11 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>get birthday contacts</title>
-</head>
-<body>
- <h1>get_birthday_contacts</h1>
- <h1>{{ msg }}</h1>
-</body>
-</html>
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div style="padding: 10px">
+        <label>Enter date: </label>
+        <input type="text" name="days_to" value="7" />
+        <span>{{form.errors.birthday}}</span>
+    </div>
+    <div class="grid">
+        <button class="change__button_g" type="submit">Submit</button>
+        <button class="change__button_r" type="reset" class="secondary">Reset</button>
+    </div>
+
+</form>
+      <ul class="phonebook_list" >
+        {% for contact in contacts%}
+        <li class="phonebook_items" >
+          {% for contact_ in contact%}
+            <a href="{% url 'contact_book:detail' contact_.id %}" role="button" class="outline">{{contact_.first_name}} {{contact_.last_name}}</a>
+            <a href="{% url 'contact_book:change_contact' contact_.id %}" role="button"><button class="button_g" type="button"> Change</button></a>
+          {% endfor %}
+        </li>
+        {% endfor %}
+      </ul>
+
+
+{% endblock content %}
