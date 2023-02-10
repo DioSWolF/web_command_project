@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .forms import MediaForm
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
-from .models import File, ProfileData
+from .models import File, Image, ProfileData
+
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, permission_required

@@ -1,55 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>create_contact</title>
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
-</head>
-<body>
- <h1>Create contact</h1>
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
 
 <form method="POST" action="{% url 'contact_book:create_contact' %}">
     {% csrf_token %}
-    <div style="padding: 10px">
-        <label>Enter first name: </label>
-        {{form.first_name}}
+    <div class="pole" >
+        <label class="pole__label">Enter first name: </label>
+        <input class="pole__input" type="text" name="first_name">
         <span>{{form.errors.first_name}}</span>
     </div>
-    <div style="padding: 10px">
-        <label>Enter last name: </label>
-        {{form.last_name}}
+    <div class="pole" >
+        <label class="pole__label">Enter last name: </label>
+        <input class="pole__input" type="text" name="last_name">
         <span>{{form.errors.last_name}}</span>
     </div>
-    <div style="padding: 10px">
+    <div class="pole" >
         <label>Enter phone (in international format +38(xxx)xxxxxxx or +38xxxxxxxxxx): </label>
-        {{form.phone}}
+        <input  class="pole__input" type="text" name="phone">
         <span>{{form.errors.phone}}</span>
     </div>
-    <div style="padding: 10px">
-        <label>Enter email: </label>
-        {{form.email}}
+    <div class="pole" >
+        <label class="pole__label">Enter email: </label>
+        <input  class="pole__input" type="text" name="email">
         <span>{{form.errors.email}}</span>
     </div>
-        <div style="padding: 10px">
-        <label>Enter address: </label>
-        {{form.address}}
+        <div class="pole" >
+        <label class="pole__label">Enter address: </label>
+        <input  class="pole__input" type="text" name="address">
         <span>{{form.errors.address}}</span>
     </div>
-        <div style="padding: 10px">
-        <label>Enter description: </label>
-        {{form.description}}
+        <div class="pole" >
+        <label class="pole__label">Enter description: </label>
+        <input  class="pole__input" type="text" name="description">
         <span>{{form.errors.description}}</span>
     </div>
-        <div style="padding: 10px">
-        <label>Enter birthday (YYYY-MM-DD): </label>
-        {{form.birthday}}
+        <div class="pole" >
+        <label class="pole__label">Enter birthday (YYYY-MM-DD): </label>
+        <input  class="pole__input" type="text" name="birthday">
         <span>{{form.errors.birthday}}</span>
     </div>
     <div class="grid">
-        <button type="submit">Submit</button>
-        <button type="reset" class="secondary">Reset</button>
+        <button class="change__button_g" type="submit">Submit</button>
+        <button class="change__button_r" type="reset" >Reset</button>
     </div>
 </form>
 
-</body>
-</html>
+{% endblock content %}
