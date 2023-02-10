@@ -6,7 +6,7 @@ class News(models.Model):
     link = models.CharField(max_length=1000, null=False)
     push_time = models.TimeField(max_length=10, null=False)
     news_type = models.CharField(max_length=50, null=False)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.name
