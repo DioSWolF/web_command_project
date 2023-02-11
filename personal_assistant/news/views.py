@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import news.parser.parse_func as pars
+from django.contrib.auth import decorators
+
 
 
 async def test(request) -> HttpResponse:

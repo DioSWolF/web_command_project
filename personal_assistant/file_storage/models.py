@@ -1,8 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-import os
-from django.conf import settings
+
 
 data_types = {
     (
@@ -125,3 +124,7 @@ class ProfileData(models.Model):
 
     class Meta:
         db_table = "MediaFilter"
+
+
+    class Meta:
+        db_table = "ImageStore"
