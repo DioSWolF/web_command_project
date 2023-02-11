@@ -3,7 +3,7 @@ from django.urls import path
 from .views import file_list, image_list, video_list, audio_list, document_list, other_list
 from .views import trash_list
 from .views import FileUpdateView, FileDetailView, FileDeleteView
-from .views import FilterUpdateView
+
 
 urlpatterns = [
     # path('upload_media/', upload_media),

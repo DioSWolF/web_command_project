@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
-from .forms import MediaForm
+from django.shortcuts import render, reverse
+
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
-from .models import File, Image, ProfileData
+from .models import File, ProfileData
 
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from .forms import FilterForm
 from django.contrib import messages
 from .src import stat_plot
@@ -15,16 +15,6 @@ class FilterUpdateView(UpdateView):
     model = ProfileData
     fields = ["filter", "reversed_sort"]
 
-    # def form_valid(self, form):
-    #     form.instance.user = self.request.user
-    #     return super().form_valid(form)
-    #
-    # def test_func(self):
-    #     file = self.get_object()
-    #     if self.request.user == file.user:
-    #         return True
-    #     else:
-    #         return False
 
     def get_success_url(self):
         return reverse('data_storage-files')

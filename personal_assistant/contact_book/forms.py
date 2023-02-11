@@ -1,4 +1,4 @@
-from django.forms import ModelForm, CharField, TextInput, DateField, DateInput
+from django.forms import ModelForm, CharField, TextInput, DateField
 from . import models
 
 
