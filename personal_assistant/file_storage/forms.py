@@ -1,6 +1,5 @@
 from django.forms import ModelForm
 from .models import File, ProfileData
-from django import forms
 
 
 class MediaForm(ModelForm):
