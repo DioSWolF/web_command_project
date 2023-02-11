@@ -6,7 +6,20 @@ from .models import Tag, Note
 def main(request):
     notes = Note.objects.all()
     tags = Tag.objects.all()
-    return render(request, 'notes/index.html', {"notes": notes, "tags":tags})
+    try:
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            new_note = form.save()
+
+            choice_tags = Tag.objects.filter(name__in=request.POST.getlist('tags'))
+            for tag in choice_tags.iterator():
+                new_note.tags.add(tag)
+
+            return redirect(to='notes:main')
+        else:
+            return render(request, 'notes/index.html', {"notes":notes,"tags": tags, 'form': form})
+    except:
+        return render(request, 'notes/index.html', {"notes": notes})
 
 
 def tag(request):
@@ -22,9 +35,9 @@ def tag(request):
 
 
 def note(request):
-    print(request.POST)
     tags = Tag.objects.all()
-    try:
+
+    if request.method == 'POST':
         form = NoteForm(request.POST)
         if form.is_valid():
             new_note = form.save()
@@ -36,8 +49,8 @@ def note(request):
             return redirect(to='notes:main')
         else:
             return render(request, 'notes/note.html', {"tags": tags, 'form': form})
-    except:
-        return render(request, 'notes/note.html', {"tags": tags, 'form': NoteForm()})
+
+    return render(request, 'notes/note.html', {"tags": tags, 'form': NoteForm()})
 
 
 def detail(request, note_id):
