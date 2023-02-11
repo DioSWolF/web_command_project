@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 from random import randrange
 import aiohttp
 from bs4 import BeautifulSoup
@@ -8,6 +9,8 @@ import news.parser.parse_dicts as pd
 import news.parser.parse_cls as pcls
 from news.models import News
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
 
 class FindArticle:
     client_session = aiohttp.ClientSession
@@ -15,7 +18,9 @@ class FindArticle:
     fake_user_model = UserAgent
     linc_dict = pd.SITE_DICT
     parse_dict = pd.PARSE_DICT
-    # news_model = News
+    news_model = News
+    artical_model = pcls.ParseArticle
+    artc_text_model = pcls.ArticalTextContent
 
     async def create_headers(self) -> None:
         self.headers = {
@@ -33,13 +38,15 @@ class FindArticle:
 
             async with self.cl_session.get(link, headers=self.headers) as resp:
                 if resp.status == 200:
-                    soup = BeautifulSoup(await resp.text(), "lxml")
+                    soup = self.bs4_model(await resp.text(), "lxml")
 
                     for artcl in soup.select(parse_cmd["select"]):
                         try:
-                            parse_article = pcls.ParseArticle(artcl, arc_type)
+                            parse_article = self.artical_model(artcl, arc_type)
 
                         except AttributeError:
+                            continue
+                        except IndexError:
                             continue
 
                         if parse_article.stop_iter:
@@ -64,8 +71,8 @@ class FindArticle:
 
             async with cl_session.get(article.link, headers=self.headers) as resp:
                 if resp.status == 200:
-                    soup = BeautifulSoup(await resp.text(), "lxml")
-                    content = pcls.ArticalTextContent(soup, article.news_type).value
+                    soup = self.bs4_model(await resp.text(), "lxml")
+                    content = self.artc_text_model(soup, article.news_type).value
 
                     self.text_content = {
                         "header": article.name,
@@ -76,28 +83,46 @@ class FindArticle:
 
 class ArticalQuery:
     fast_news = pd.ARTICLE_DICT
+    news_model = News
 
     async def get_fast_news(self) -> None:
         for artc_type in pd.SITE_DICT:
-            news_list = News.objects.filter(news_type=artc_type).order_by("-push_time")[
+            news_list = self.news_model.objects.filter(news_type=artc_type).order_by("-push_time")[
                 :5
             ]
 
             self.fast_news["articles"][artc_type] = news_list
 
     async def get_all_news(self, news_type: str) -> None:
-        self.articles_list = News.objects.filter(news_type=news_type).order_by(
+        self.articles_list = self.news_model.objects.filter(news_type=news_type).order_by(
             "-push_time"
         )
 
     async def get_article(self, artical_id: int) -> None:
-        self.article = News.objects.filter(id=artical_id).first()
+        self.article = self.news_model.objects.filter(id=artical_id).first()
+    
+    async def clean_list(self):
+        date_now = datetime.now().date() 
+        self.news_model.objects.exclude(created = date_now).delete()
 
 
-async def main() -> None:
+async def find_article() -> None:
+
     async with aiohttp.ClientSession() as cl_session:
-        a = FindArticle()
-        await a.find_article(cl_session)
+        article = FindArticle()
+        await ArticalQuery().clean_list()
+        await article.find_article(cl_session)
 
 
-# asyncio.run(main())
+job_storage = DjangoJobStore()
+scheduler = BackgroundScheduler()
+scheduler.add_jobstore(job_storage, "default")
+job_storage.remove_all_jobs()
+
+@register_job(scheduler, "interval", seconds=60)
+def start_parse():
+    asyncio.run(find_article())
+
+register_events(scheduler)
+
+scheduler.start()

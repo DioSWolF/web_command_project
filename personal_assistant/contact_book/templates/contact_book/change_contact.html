@@ -1,52 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>change_contact</title>
-</head>
-<body>
- <h1>Change contact</h1>
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
 <form method="POST">
     {% csrf_token %}
-    <div style="padding: 10px">
-        <label>Enter first name: </label>
-        <input type="text" name="first_name" value={{contact.first_name}} />
+    <div class="pole" >
+        <label class="pole__label">Enter first name: </label>
+        <input class="pole__input" type="text" name="first_name" value={{contact.first_name}}>
         <span>{{form.errors.first_name}}</span>
     </div>
-    <div style="padding: 10px">
-        <label>Enter last name: </label>
-        <input type="text" name="last_name" value={{contact.last_name}} />
+    <div  class="pole" >
+        <label class="pole__label">Enter last name: </label>
+        <input class="pole__input" type="text" name="last_name" value={{contact.last_name}}>
         <span>{{form.errors.last_name}}</span>
     </div>
-    <div style="padding: 10px">
-        <label>Enter phone: </label>
-        <input type="text" name="phone" value={{contact.phone}} />
+    <div  class="pole" >
+        <label class="pole__label">Enter phone (in international format +38(xxx)xxxxxxx or +38xxxxxxxxxx): </label>
+        <input  class="pole__input" type="text" name="phone" value={{contact.phone}}>
         <span>{{form.errors.phone}}</span>
     </div>
-    <div style="padding: 10px">
-        <label>Enter email: </label>
-        <input type="text" name="email" value={{contact.email}} />
+    <div  class="pole" >
+        <label class="pole__label">Enter email: </label>
+        <input  class="pole__input" type="text" name="email" value={{contact.email}}>
         <span>{{form.errors.email}}</span>
     </div>
-        <div style="padding: 10px">
-        <label>Enter address: </label>
-        <input type="text" name="address" value={{contact.address}} />
+    <div  class="pole" >
+        <label class="pole__label">Enter address: </label>
+        <input  class="pole__input" type="text" name="address" value={{contact.address}}>
         <span>{{form.errors.address}}</span>
     </div>
-        <div style="padding: 10px">
-        <label>Enter description: </label>
-        <input type="text" name="description" value={{contact.description}} />
+    <div  class="pole" >
+        <label class="pole__label">Enter description: </label>
+        <input  class="pole__input" type="text" name="description" value={{contact.description}}>
         <span>{{form.errors.description}}</span>
     </div>
-        <div style="padding: 10px">
-        <label>Enter birthday (YYYY-MM-DD): </label>
-        <input type="text" name="birthday" value={{birthday_str}} />
+    <div  class="pole" >
+        <label class="pole__label">Enter birthday (YYYY-MM-DD): </label>
+        <input  class="pole__input" type="text" name="birthday" value={{birthday_str}}>
         <span>{{form.errors.birthday}}</span>
     </div>
     <div class="grid">
-        <button type="submit">Submit</button>
-        <button type="reset" class="secondary">Reset</button>
+        <button class="change__button_g" type="submit">Submit</button>
+        <button class="change__button_r" type="reset" >Reset</button>
     </div>
 </form>
-</body>
-</html>
+{% endblock content %}

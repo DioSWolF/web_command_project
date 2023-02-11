@@ -1,0 +1,88 @@
+.pole {
+padding: 10px;
+}
+.pole__label {
+}
+
+.pole__input {
+display: block;
+}
+
+.button_r {
+background-color: #AC6252;
+border-radius: 5px;
+border: none;
+}
+
+.button_g {
+background-color: #B7C463;
+border-radius: 5px;
+border: none;
+}
+
+.change__button_g {
+min-width: 100px;
+padding: 10px;
+background-color: #B7C463;
+border-radius: 5px;
+border: none;
+}
+
+.change__button_r {
+min-width: 100px;
+padding: 10px;
+background-color: #AC6252;
+border-radius: 5px;
+border: none;
+}
+
+.phonebook_items {
+text-align: justify;
+margin-bottom: 5px;
+list-style: none;
+display: flex;
+list-style: none;
+justify-content: space-between;
+}
+.phonebook_list {
+display: block;
+}
+
+.nav {
+padding-top: 50px;
+margin-bottom: 20px;
+border-bottom: 2px solid;
+}
+
+.nav_list {
+display: flex;
+}
+
+.nav_items {
+text-decoration: none;
+color: #5f788a;
+font-size: 20px;
+margin-right: 20px;
+list-style: none;
+}
+
+.nav_items>a {
+text-decoration: none !Important;
+}
+
+.container {
+}
+
+.buttons {
+text-align: center;
+}
+
+.row {
+    flex-wrap: nowrap;
+}
+.
+element.style {
+}
+.card-body {
+padding: 0;
+}

@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import news.parser.parse_func as pars
+from django.contrib.auth import decorators
+
 
 
 async def test(request) -> HttpResponse:
@@ -12,7 +14,6 @@ async def test(request) -> HttpResponse:
 async def articles(request, news_type) -> HttpResponse:
     articles = pars.ArticalQuery()
     await articles.get_all_news(news_type)
-
     return render(
         request, "news/article_list.html", context={"artical": articles.articles_list}
     )

@@ -1,11 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>find contact</title>
-</head>
-<body>
- <h1>Find by</h1>
- <h1>{{ msg }}</h1>
-</body>
-</html>
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+              <select
+                class="col-sm-12 form-control"
+                placeholder="find_by"
+                name="find_by">
+                <option value="first_name">first name</option>
+                <option value="last_name">last name</option>
+                <option value="phone">phone</option>
+                <option value="email">email</option>
+                <option value="address">address</option>
+                <option value="description">description</option>
+                <option value="anywhere">anywhere</option>
+              </select>
+            </div>
+
+    <div style="padding: 10px">
+        <label>Enter data: </label>
+        <input type="text" name="search_value" value="" />
+    </div>
+    <div class="grid">
+        <button class="change__button_g" type="submit">Submit</button>
+        <button class="change__button_r" type="reset" class="secondary">Reset</button>
+    </div>
+
+</form>
+
+      <ul class="phonebook_list" >
+          {% for contact in contacts%}
+        <li class="phonebook_items" >
+            <a href="{% url 'contact_book:detail' contact.id %}" role="button" class="outline">{{contact.first_name}} {{contact.last_name}}</a>
+            <a href="{% url 'contact_book:change_contact' contact.id %}" role="button"><button class="button_g" type="button"> Change</button></a>
+        </li>
+          {% endfor %}
+      </ul>
+
+{% endblock content %}
+
+
+

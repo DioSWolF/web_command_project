@@ -123,3 +123,4 @@ class ParseArticle:
         self.stop_iter: str = self.parse_stop(article, type_news).value
         self.push_time: str = self.parse_push_time(article, type_news).value
         self.type_news: str = type_news
+
