@@ -15,5 +15,7 @@ class Note(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField(Tag, max_length=15)
 
+    def extract_tags(self):
+        pass
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.pk}♂{self.name}♂{self.description}♂{self.tags}♂{self.created}"

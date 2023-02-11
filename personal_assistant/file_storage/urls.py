@@ -20,5 +20,5 @@ urlpatterns = [
     path('trash/', trash_list, name='data_storage-trash'),
     path('upload/', send_files, name="uploads"),
     path('file/<int:pk>/update/', FileUpdateView.as_view(), name='file-update'),
-    path('file/<int:pk>/delete/', FileDeleteView.as_view(), name='file-delete'),
+    path('file/<int:pk>/delete/', FileDeleteView.as_view(), name='file-delete'),]
 

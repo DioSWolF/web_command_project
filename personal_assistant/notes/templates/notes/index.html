@@ -1,36 +1,20 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Organizer</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-</head>
-<body>
+{% extends "notes/base.html" %}
+
+{% block content %}
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
-
-<main class="container">
-    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
-        <ul>
-
-            <li><a href="{% url 'notes:note' %}" role="button">Add note</a></li>
-            <li><a href="{% url 'notes:tag' %}" role="button">Add Tag</a></li>
-        </ul>
-    </nav>
-    {% for note in notes %}
-    <ul>
-        <li>
-            <a href="{% url 'notes:detail' note.id %}" role="button" class="outline"> {{ note.name }} </a>
-            <a href="{% url 'notes:delete' note.id %}" role="button" class="contrast"> Delete note </a>
-        </li>
-    </ul>
-    {% endfor %}
-    <form method="POST" action="{% url 'notes:note' %}">
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Create note
     </button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tagModal">
+        Create tag
+    </button>
+</div>
+<form method="POST" action="{% url 'notes:note' %}">
     <div style="padding: 10px">
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -81,7 +65,146 @@
             </div>
         </div>
     </div>
-    </form>
-</main>
-</body>
-</html>
+</form>
+<form method="POST" action="{% url 'notes:tag' %}">
+
+    <div style="padding: 10px">
+        <!-- Modal -->
+        <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="tagModalLabel">Create tag</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'notes:tag' %}">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon2">Tag name</span>
+                                <input type="text" class="form-control" required minlength="3"
+                                       maxlength="64"
+                                       placeholder="1-64 symbols"
+                                       aria-label="name"
+                                       aria-describedby="basic-addon2" name="name">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Create tag</button>
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for note in notes %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">{{note.name}}</div>
+                    <div class="card-body">
+                        <p class="card-text text-truncate">{{note.description}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                        data-bs-target="#viewNote">View
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteNote" data-bs-whatever="{{note}}">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+<form>
+    <div class="modal fade" id="viewNote" tabindex="-1"
+         aria-labelledby="viewnotelabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="viewnotelabel">{{note.name}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <p>{{note.description}}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Yes</button>
+                    <button type="reset" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form method="POST" id="deleteForm" name="deleteForm" action="/">
+    <div style="padding: 10px">
+        <!-- Modal -->
+        <div class="modal fade" id="deleteNote" tabindex="-1"
+             aria-labelledby="deletenotelabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deletenotelabel">Are you
+                            sure?</h1>
+                        <button type="button" class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <p>This action is irreversible.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Yes</button>
+                        <button type="reset" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+const exampleModal = document.getElementById('deleteNote')
+exampleModal.addEventListener('show.bs.modal', event => {
+// Button that triggered the modal
+const button = event.relatedTarget
+// Extract info from data-bs-* attributes
+const recipient = button.getAttribute('data-bs-whatever').split("♂")
+// Update the modal's content.
+const noteid = recipient[0]
+var act = "/notes/delete/"
+document.getElementById('deleteForm').action = act + noteid
+
+
+
+})
+
+
+
+</script>
+{% endblock %}
