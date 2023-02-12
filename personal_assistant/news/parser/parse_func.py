@@ -113,16 +113,18 @@ async def find_article() -> None:
         await ArticalQuery().clean_list()
         await article.find_article(cl_session)
 
+try:
+    job_storage = DjangoJobStore()
+    scheduler = BackgroundScheduler()
+    scheduler.add_jobstore(job_storage, "default")
+    job_storage.remove_all_jobs()
 
-job_storage = DjangoJobStore()
-scheduler = BackgroundScheduler()
-scheduler.add_jobstore(job_storage, "default")
-job_storage.remove_all_jobs()
+    @register_job(scheduler, "interval", seconds=60)
+    def start_parse():
+        asyncio.run(find_article())
 
-@register_job(scheduler, "interval", seconds=60)
-def start_parse():
-    asyncio.run(find_article())
+    register_events(scheduler)
 
-register_events(scheduler)
-
-scheduler.start()
+    scheduler.start()
+except:
+    pass
