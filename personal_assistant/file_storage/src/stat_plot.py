@@ -32,9 +32,9 @@ def get_plot(query, user, title="Memory use"):
 
     max_memory = ProfileData.objects.filter(user=user).first().max_capacity //1024 //1024
     plt.title(f"Used {memory_occupied} MB / {max_memory} MB", fontsize=16)
-    print(folders)
+    # print(folders)
     folders = dict(sorted(folders.items(), key=lambda x: x[1], reverse=True))
-    print(folders)
+    # print(folders)
     colors = ["#FB0007", "#3700FF", "#44FF07", "#FED60A", "#FB13F3", "#ffa300", "#0bb4ff", "#b3d4ff", "#00bfa0"]
     labels = [str(x) for x in folders.keys()]
     sizes = [float(x) for x in folders.values()]

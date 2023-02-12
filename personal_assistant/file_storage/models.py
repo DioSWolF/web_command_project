@@ -78,7 +78,7 @@ class File(models.Model):
         db_table = "MediaStore"
 
     def __str__(self):
-        max_len = 16
+        max_len = 10
         if str(self.datatype) == "audio":
             max_len = 30
         return str(self.name) if len(str(self.name)) < max_len else str(self.name)[:max_len-3]+"..."
@@ -117,7 +117,7 @@ class ProfileData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     filter_by = models.CharField(max_length=15, choices=filters, default="name")
     reversed_sort = models.BooleanField(default=False)
-    max_capacity = models.IntegerField(default=50*1024*1024)#524288000)
+    max_capacity = models.IntegerField(default=100*1024*1024)#524288000)
     memory_occupied = models.IntegerField(default=0)
     max_num_of_files = models.IntegerField(default=200)
     num_of_files = models.IntegerField(default=0)
