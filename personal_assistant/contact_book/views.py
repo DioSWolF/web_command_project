@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from django.contrib.auth import decorators
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db.models import Q
@@ -17,7 +17,7 @@ def checker(request):
     )
 
 
-@decorators.login_required
+@login_required(login_url='/login/')
 def get_contact_book(request):
     contacts = ContactBook.objects.filter(owner=request.user).all()
     return render(
@@ -27,7 +27,7 @@ def get_contact_book(request):
     )
 
 
-@decorators.login_required
+@login_required(login_url='/login/')
 def create_contact(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
@@ -45,13 +45,13 @@ def create_contact(request):
     )
 
 
-@decorators.login_required
+@login_required(login_url='/login/')
 def datail(request, contact_id):
     contact = get_object_or_404(ContactBook, pk=contact_id, owner=request.user)
     return render(request, "contact_book/detail.html", context={"contact": contact})
 
 
-@decorators.login_required
+@login_required(login_url='/login/')
 def change_contact(request, contact_id):
     contact = get_object_or_404(ContactBook, pk=contact_id, owner=request.user)
     if request.method == "POST":
@@ -82,26 +82,33 @@ def change_contact(request, contact_id):
     return render(request, "contact_book/change_contact.html", context)
 
 
-@decorators.login_required
+@login_required(login_url='/login/')
 def find_by(request):
     contacts = ContactBook.objects.filter(owner=request.user)
     if request.method == "POST":
 
         find_by_method = request.POST["find_by"]
         search_value = (request.POST["search_value"])
+        order_by_field = (request.POST["order_by_field"])
 
         if find_by_method == "first_name":
-            contacts = ContactBook.objects.filter(owner=request.user, first_name__icontains=search_value)
+            contacts = ContactBook.objects.filter(owner=request.user, first_name__icontains=search_value)\
+                .order_by(order_by_field)
         elif find_by_method == "last_name":
-            contacts = ContactBook.objects.filter(owner=request.user, last_name__icontains=search_value)
+            contacts = ContactBook.objects.filter(owner=request.user, last_name__icontains=search_value)\
+                .order_by(order_by_field)
         elif find_by_method == "phone":
-            contacts = ContactBook.objects.filter(owner=request.user, phone__icontains=search_value)
+            contacts = ContactBook.objects.filter(owner=request.user, phone__icontains=search_value)\
+                .order_by(order_by_field)
         elif find_by_method == "email":
-            contacts = ContactBook.objects.filter(owner=request.user, email__icontains=search_value)
+            contacts = ContactBook.objects.filter(owner=request.user, email__icontains=search_value)\
+                .order_by(order_by_field)
         elif find_by_method == "address":
-            contacts = ContactBook.objects.filter(owner=request.user, address__icontains=search_value)
+            contacts = ContactBook.objects.filter(owner=request.user, address__icontains=search_value)\
+                .order_by(order_by_field)
         elif find_by_method == "description":
-            contacts = ContactBook.objects.filter(owner=request.user, description__icontains=search_value)
+            contacts = ContactBook.objects.filter(owner=request.user, description__icontains=search_value)\
+                .order_by(order_by_field)
         else:
             contacts = ContactBook.objects.filter(Q(first_name__icontains=search_value) |\
                                                   Q(last_name__icontains=search_value) |
@@ -109,12 +116,12 @@ def find_by(request):
                                                   Q(email__icontains=search_value) |
                                                   Q(address__icontains=search_value) | \
                                                   Q(owner=request.user) | \
-                                                  Q(description__icontains=search_value))
+                                                  Q(description__icontains=search_value)).order_by(order_by_field)
 
     return render(request, "contact_book/find_by.html", context={"contacts": contacts})
 
 
-@decorators.login_required
+@login_required(login_url='/login/')
 def delete_contact(request, contact_id):
     if request.POST:
         ContactBook.objects.filter(owner=request.user, pk=contact_id).delete()
@@ -122,7 +129,7 @@ def delete_contact(request, contact_id):
     return render(request, "contact_book/delete_contact.html")
 
 
-@decorators.login_required
+@login_required(login_url='/login/')
 def get_birthday_contacts(request):
     current_date = datetime.now().date()
     date_list = [current_date]
@@ -148,6 +155,7 @@ def get_birthday_contacts(request):
 
     for i in date_list:
         context = ContactBook.objects.filter(owner=request.user, birthday__month=i.month, birthday__day=i.day)
+
         if context:
             date_birthday_list.append(context)
 
