@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:  
+
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234321
+      - POSTGRES_DB=command_project
+
+  web:
+    build: ./personal_assistant
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app/:/usr/src/app/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./personal_assistant/.env
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
