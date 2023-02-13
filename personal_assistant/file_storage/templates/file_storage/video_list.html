@@ -1,27 +1,53 @@
 {% extends "users/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+
+<!--<div class="btn-group btn-group-lg btn-group" role="group" aria-label="...">-->
+<!--    <a href="/files/"  style=" margin:1 10;">-->
+<!--        <button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">All</button>-->
+<!--    </a>-->
+<!--    <a href="/images/" style=" margin:1 10;">-->
+<!--        <button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Images</button>-->
+<!--    </a>-->
+<!--    <a href="/video/"   style=" margin:1 10;">-->
+<!--        <button class="btn btn-warning btn-sm p-10 m-10" style="width: 100px">Video</button>-->
+<!--    </a>-->
+<!--    <a href="/audio/"  style=" margin:1 10;">-->
+<!--        <button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Audio</button>-->
+<!--    </a>-->
+<!--    <a href="/documents/"  style=" margin:1 10;">-->
+<!--        <button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Documents</button>-->
+<!--    </a>-->
+<!--    <a href="/other/"  style=" margin:1 10;">-->
+<!--        <button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Other</button>-->
+<!--    </a>-->
+<!--    <a href="/trash/"  style=" margin:1 10;">-->
+<!--        <button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Trash</button>-->
+<!--    </a>-->
+
+<!--</div>-->
+
 <div class="container-fluid" style=" margin:0 auto;">
     <div class="row" style=" margin: 0 auto 10;">
-        <a href="/files/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">All</button></a>
-        <a href="/images/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Images</button></a>
-        <a href="/video/" style=" margin:0 5;"><button class="btn btn-warning btn-sm p-10 m-10" style="width: 100px">Video</button></a>
-        <a href="/audio/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Audio</button></a>
-        <a href="/documents/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Documents</button></a>
-        <a href="/other/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Other</button></a>
-        <a href="/trash/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Trash</button></a>
+        <a href="/files/" class="col-xl-1 col-lg-1 col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">All</button></a>
+        <a href="/images/" class="col-xl-1 col-lg-1 col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">Images</button></a>
+        <a href="/video/"  class="col-xl-1 col-lg-1  col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-warning btn-sm p-10 m-10" style="width: 90px">Video</button></a>
+        <a href="/audio/" class="col-xl-1 col-lg-1  col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">Audio</button></a>
+        <a href="/documents/" class="col-xl-1 col-lg-1 col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">Documents</button></a>
+        <a href="/other/" class="col-xl-1 col-lg-1  col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">Other</button></a>
+        <a href="/trash/" class="col-xl-1 col-lg-1  col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">Trash</button></a>
 
     </div>
 </div>
 
 {% if files %}
-    <div class="container" style=" margin:20 ; padding:0">
+    <div class="container " style=" margin:10 ; padding:2">
         <form action="#" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="container">
                 <div class="row">
-                    <p class="col-xl-1 pt-2"> Sort by:</p>
-                    <select name="filter_by" class="form-control col-xl-2">
+                    <p class="col-xl-1 col-lg-2 col-md-2 col-sm-3 col-2 pt-3"> Sort by:</p>
+                    <select name="filter_by" class=" col-xl-2 col-lg-2 col-md-3 col-sm-4 col-4 ">
                         {% for value, text in filter_form.fields.filter_by.choices %}
                             {% if value == filter_form.initial.filter_by %}
                                 <option value="{{value}}" selected>{{text}}</option>
@@ -30,13 +56,16 @@
                             {% endif %}
                         {% endfor %}
                     </select>
-                    <div class="col-xl-2 pt-2 align-middle">
+                    <div class="col-lg-2 col-md-2 col-sm-3  col-3 pt-2 mt-2 align-middle">
                         <p>{{filter_form.reversed_sort}} Reverse</p>
                     </div>
-                    <button type="submit" class=" col-xl-1 btn-primary h-75 pt-1 "  value="save">Filter</button>
+                    <button type="submit"
+                            class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-10 btn btn-warning h-75 pt-1 mt-2"
+                            value="save">Filter</button>
                 </div>
             </div>
         </form>
+        </div>
     </div>
 {% endif %}
 
@@ -48,7 +77,7 @@
 
                 <a href="/file/{{file.id}}">
                     <div class="card-body">
-                    <video  class=".justify-content-center"  width="320" height="240"  autoplay loop muted>
+                    <video  class=".justify-content-center w-100 h-75"    autoplay loop muted>
                         <source src="{{file.data.url}}" type="video/mp4" />
                     </video>
 <!--                    <video width="320" height="240" controls>-->

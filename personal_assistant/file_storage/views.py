@@ -1,8 +1,6 @@
-from django.shortcuts import render, reverse
-
+from django.shortcuts import render, redirect, reverse
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from .models import File, ProfileData
-
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required

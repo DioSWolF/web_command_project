@@ -1,6 +1,6 @@
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:700,300);*/
 
-
+/*
 .frame {
 	position: absolute;
 	top: 50%;
@@ -16,7 +16,7 @@
 	color: #333;
 	font-family: "Open Sans", Helvetica, sans-serif;
 }
-
+*/
 /*
 .center {
 	position: absolute;
@@ -72,26 +72,27 @@ h1 {
 	opacity: 0;
 }
 
-
-.btn_upload {
-	display: block;
-
-	width: 140px;
-	height: 40px;
-	background: darkmagenta;
-	color: #fff;
-	border-radius: 3px;
-	border: 0;
-	box-shadow: 0 3px 0 0 hotpink;
-	transition: all 0.3s ease-in-out;
-	font-size: 14px;
+a.file-item {
+  color: #00008B;
+  font-family: Cursive;
+  text-decoration: none;
 }
 
-.btn:hover {
-	background: rebeccapurple;
-	box-shadow: 0 3px 0 0 deeppink;
+a.file-item:hover {
+  text-decoration: none;
 }
 
+a.file-item:active {
+  color: black;
+}
+
+.truncateLongTexts{
+   font-size: 1.2em;
+  margin-right: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis // This is where the magic happens
+}
 /* For image list */
 
 /* This default styling works for large screen devices (All devices with resolution of 1200px or above), for example laptops */
@@ -108,41 +109,45 @@ height: 200px;
 
 @media (min-width: 992px) and (max-width: 1199px){
   .image_div{
-    max-height: 300px;
+    max-height: 250px;
+    max-width: 220px;
+  }
+   .image_body{
+    height: 200px;
+    width: 200px;
   }
 }
 
-@media (min-width: 992px) and (max-width: 1199px){
-  .image_body{
-    height: 200px;
-  }
-}
+
 /* This media query works for small screen devices (All devices with resolution from 768px to 991px), for example tablets */
 
 @media (min-width: 768px) and (max-width: 991px){
   .image_div{
-    max-height: 300px;
+    max-height: 250px;
+    max-width: 200px;
   }
-}
-
-@media (min-width: 768px) and (max-width: 991px){
-  .image_body{
+   .image_body{
     height: 200px;
+    width: 200px;
+  }
+  .filetype-title{
+  font-size:1vw;
   }
 }
 
 /* This media query works for extra small screen devices (All devices with below resolution of 767px), for example Iphones, Smart Phones */
 
 @media (max-width: 767px){
+
   .image_div{
-    max-height: 350px;
-    max-width: 300px;
+    max-height: 160px;
+    max-width: 200px;
     margin: auto;
   }
-}
-@media (max-width: 767px){
-  .image_body{
-    height: 200px;
+   .image_body{
+    height: 110px;
+    width: 200px;
     margin: auto;
   }
+
 }

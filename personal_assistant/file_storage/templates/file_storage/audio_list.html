@@ -3,25 +3,25 @@
 {% block content %}
 <div class="container-fluid" style=" margin:0 auto;">
     <div class="row" style=" margin: 0 auto 10;">
-        <a href="/files/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">All</button></a>
-        <a href="/images/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Images</button></a>
-        <a href="/video/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Video</button></a>
-        <a href="/audio/" style=" margin:0 5;"><button class="btn btn-warning btn-sm p-10 m-10" style="width: 100px">Audio</button></a>
-        <a href="/documents/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Documents</button></a>
-        <a href="/other/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Other</button></a>
-        <a href="/trash/" style=" margin:0 5;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 100px">Trash</button></a>
+        <a href="/files/" class="col-xl-1 col-lg-1 col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">All</button></a>
+        <a href="/images/" class="col-xl-1 col-lg-1 col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">Images</button></a>
+        <a href="/video/"  class="col-xl-1 col-lg-1  col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">Video</button></a>
+        <a href="/audio/" class="col-xl-1 col-lg-1  col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-warning btn-sm p-10 m-10" style="width: 90px">Audio</button></a>
+        <a href="/documents/" class="col-xl-1 col-lg-1 col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">Documents</button></a>
+        <a href="/other/" class="col-xl-1 col-lg-1  col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">Other</button></a>
+        <a href="/trash/" class="col-xl-1 col-lg-1  col-sm-2 col-3" style=" margin:1 10;"><button class="btn btn-primary btn-sm p-10 m-10" style="width: 90px">Trash</button></a>
 
     </div>
 </div>
 
 {% if files %}
-    <div class="container" style=" margin:20 ; padding:0">
+<div class="container " style=" margin:10 ; padding:2">
         <form action="#" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="container">
                 <div class="row">
-                    <p class="col-xl-1 pt-2"> Sort by:</p>
-                    <select name="filter_by" class="form-control col-xl-2">
+                    <p class="col-xl-1 col-lg-2 col-md-2 col-sm-3 col-2 pt-3"> Sort by:</p>
+                    <select name="filter_by" class=" col-xl-2 col-lg-2 col-md-3 col-sm-4 col-4 ">
                         {% for value, text in filter_form.fields.filter_by.choices %}
                             {% if value == filter_form.initial.filter_by %}
                                 <option value="{{value}}" selected>{{text}}</option>
@@ -30,28 +30,36 @@
                             {% endif %}
                         {% endfor %}
                     </select>
-                    <div class="col-xl-2 pt-2 align-middle">
+                    <div class="col-lg-2 col-md-2 col-sm-3  col-3 pt-2 mt-2 align-middle">
                         <p>{{filter_form.reversed_sort}} Reverse</p>
                     </div>
-                    <button type="submit" class=" col-xl-1 btn-primary h-75 pt-1 "  value="save">Filter</button>
+                    <button type="submit"
+                            class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-10 btn btn-warning h-75 pt-1 mt-2"
+                            value="save">Filter</button>
                 </div>
             </div>
         </form>
+        </div>
     </div>
 {% endif %}
 <div class="container">
     <ul class="list-group">
         {% for file in files %}
             <li class="list-group-item ">
-                <div class="d-flex w-100">
-                    <div class="col-xl-8"><a href="/file/{{file.id}}" >
-                    <h3>{{file.name}} </h3></a> </div>
-                    <div class="col-xl-2">
-                        <small>{{ file.date_posted|date:"F d Y h:m"}}</small>
+                <div class="d-flex w-100 truncateLongTexts">
+                    <div class="col-xl-9 col-lg-9 col-md-7 col-7 truncateLongTexts">
+                        <a href="/file/{{file.id}}" class="truncateLongTexts file-item"  >{{file.name}}
+<!--                            <h3 class="truncateLongTexts">{{file.name}} </h3>-->
+                        </a>
                     </div>
-                     <div class="col-xl-2 text-right"><h3  class="float-right"> {{file.size_str}}</h3></div>
+                    <div class="col-xl-3 col-lg-3 col-md-5 col-5 text-right">
+                        <small>{{ file.date_posted|date:"m.d.Y h:m"}} <b>{{file.size_str}}</b></small>
+                    </div>
+<!--                     <div class="col-xl-2 col-lg-2 col-md-3 col-3 text-right ">-->
+<!--                         <h3  class="float-right "> {{file.size_str}}</h3>-->
+<!--                     </div>-->
                 </div>
-                <audio class="w-100"  loop controls>
+                <audio class="w-100 "  loop controls>
                     <source src="{{file.data.url}}" type="audio/ogg">
                     <source src="{{file.data.url}}" type="audio/mpeg">
                     Your browser does not support the audio element.

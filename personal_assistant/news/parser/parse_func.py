@@ -119,12 +119,11 @@ try:
     scheduler.add_jobstore(job_storage, "default")
     job_storage.remove_all_jobs()
 
-
-    @register_job(scheduler, "interval", seconds=10)
+    @register_job(scheduler, "interval", seconds=60)
     def start_parse():
         asyncio.run(find_article())
 
-
+    register_events(scheduler)
     scheduler.start()
 except:
     pass
