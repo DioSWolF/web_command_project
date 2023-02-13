@@ -124,7 +124,6 @@ try:
         asyncio.run(find_article())
 
     register_events(scheduler)
-
     scheduler.start()
 except:
     pass
