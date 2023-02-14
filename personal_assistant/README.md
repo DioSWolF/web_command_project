@@ -30,14 +30,37 @@ SOFTWARE.
 
 ## Getting Started With The "Personal Assistant"
 
-```
-docker pull image:tag
-```
+Open the command line in the folder where the Dockerfile is located and enter 
+the following commands (note that Docker Desktop must be running)
 
+Note that before installing the program, you must write down the access 
+path to the database and the secret key in the file .env
+```
+docker build .
+```
+```
+docker-compose up -d --build
+```
+```
+docker-compose exec web python manage.py makemigrations --noinput
+```
+```
+docker-compose exec web python manage.py migrate --noinput
+```
+To start working with the program, in the address bar of the browser, enter the
+appropriate host and port that you specified in the .env file
 
 ## Setting Environment Variables File
+Before starting the installation of the program, it is necessary to create an .env file with 
+the following content (an example of this file is .env.example)
 
-
+* SECRET_KEY=*{Your Secret key}*
+* NAME=*{The name of your database}*
+* USER=*{The username used to access the database}*
+* PASSWORD=*{Your password to the database}*
+* HOST=*{The fully registered domain name of the host in the DNS system or the IP address
+of the host in the form of four groups of decimal numbers separated by periods}*
+* PORT=*{Host port to connect to}*
 
 
 
