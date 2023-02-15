@@ -85,18 +85,23 @@ def edit(request, note_id):
 
 
 @login_required(login_url='/login/')
-def alteration(request, note_id, action):
+def alteration(request, note_id):
     note = get_object_or_404(Note, pk=note_id, owner=request.user)
-    match action:
-        case 'Δ':
-            note.description = request.POST.get('description')
-            note.save()
-            return redirect("notes:edit", note_id=note_id)
-        case '+':
-            for each in note.tags.all():
-                note.tags.remove(each)
-            print(request.POST.getlist('tags'))
-            for each in request.POST.getlist('tags'):
-                tag = get_object_or_404(Tag, name=each)
-                note.tags.add(tag)
-            return redirect("notes:edit", note_id=note_id)
+    note.description = request.POST.get('description')
+    note.name = request.POST.get('name')
+    note.save()
+
+    for each in note.tags.all():
+        note.tags.remove(each)
+    for each in request.POST.getlist('tags'):
+        tag = get_object_or_404(Tag, name=each)
+        note.tags.add(tag)
+    return redirect("notes:edit", note_id=note_id)
+
+
+@login_required(login_url='/login/')
+def tag_delete(request):
+    for each in request.POST.getlist('tag_delete'):
+        tag = get_object_or_404(Tag, name=each, owner=request.user)
+        tag.delete()
+    return redirect(to="notes:main")
