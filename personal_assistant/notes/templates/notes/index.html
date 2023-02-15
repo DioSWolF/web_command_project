@@ -1,4 +1,4 @@
-{% extends "notes/base.html" %}
+{% extends "users/base.html" %}
 {% load extract_tags %}
 {% load delete_blank %}
 {% load static %}
@@ -15,25 +15,52 @@
 <script type="module">
       import Autogrow from "https://cdn.jsdelivr.net/npm/vanilla-autogrow@1.0.0/autogrow.min.js";
       var inst = new Autogrow();
-
-
 </script>
-<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Create note
-    </button>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tagModal">
-        Create tag
-    </button>
-</div>
+
 <form method="POST" action="{% url 'notes:main' %}">
     {% csrf_token %}
-    <div class="row height d-flex justify-content-center align-items-center">
-        <div class="col-md-8">
-            <div class="search">
-                <i class="fa fa-search"></i>
-                <input type="text" class="form-control" placeholder="Search" name="question">
-                <button class="btn btn-primary" type="submit">Search</button>
+    <div class="input-group mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Create note
+        </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tagModal">
+            Create tag
+        </button>
+        <input type="text" class="form-control" placeholder="Search" name="question" aria-describedby="search-button1">
+        <button class="btn btn-outline-primary" type="submit" id="search-button1">Search</button>
+        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deletetagModal">Delete tag</button>
+    </div>
+</form>
+<form method="POST" action="{% url 'notes:tag_delete' %}">
+    {% csrf_token %}
+    <div style="padding: 10px">
+        <!-- Modal -->
+        <div class="modal fade" id="deletetagModal" tabindex="-1" aria-labelledby="deletetagmodalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deletetagmodalLabel">Delete tag</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                       <div class="input-group" style="padding-top: 10px">
+                                    <label class="input-group-text" for="tag_delete">Tags</label>
+                                    <select class="multiselect form-control" multiple="multiple"
+                                            aria-label="multiple select example"
+                                             name="tag_delete" id="tag_delete" size="5">
+                                        {% for tag in tags %}
+                                        <option value="{{tag.name}}">{{tag.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                       </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Delete tag</button>
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -90,6 +117,9 @@
                                             }
                                           });
                                         });
+
+
+
 
 
                                     </script>
@@ -263,14 +293,12 @@
                 <div class="card">
                     <div class="card-header">{{note.name}}</div>
                     <div class="card-body">
-                        <p class="card-text text-truncate">{{note.description}}</p>
+                        <p class="card-text text-truncate text-center">{{note.description}}</p>
                     </div>
                     <ul class="list-group">
                         {% for tag in note.tags|tags %}
-
                         <li class="list-group-item text-center bg-body-secondary text-primary text-wrap fs-6">{{tag}}
                         </li>
-
                         {% endfor %}
                     </ul>
                     <div class="card-footer">
@@ -303,7 +331,6 @@
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
                     <div class="input-group" style="position: relative">
                         <span class="input-group-text">Note description</span>
                         <textarea class="form-control"
@@ -369,9 +396,6 @@ const noteid = recipient[0]
 var act = "/notes/delete/"
 document.getElementById('deleteForm').action = act + noteid
 })
-
-
-
 </script>
 <script>
 const viewModal = document.getElementById('viewNote')
@@ -389,8 +413,5 @@ modalBtn.href = "/notes/edit/" + recipient[0]
 modalTitle.textContent = recipient[1]
 modalBodyInput.value = recipient[2]
 })
-
-
-
 </script>
 {% endblock %}
