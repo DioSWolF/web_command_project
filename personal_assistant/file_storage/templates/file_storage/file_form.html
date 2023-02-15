@@ -57,13 +57,22 @@
 
         <div>
             <a class="btn btn-warning btn-xl mt-1 mb-1" href="{{object.data.url}}" download>Download</a>
-            <a class="btn btn-primary btn-xl mt-1 mb-1" type="submit">Save</a>
-            {% if object.in_trash == False %}
-                <a class="btn btn-danger btn-xl mt-1 mb-1" href="#">Move to trash</a>
-            {% else %}
-                <a class="btn btn-success btn-xl mt-1 mb-1" href="#">Restore</a>
-                <a class="btn btn-danger btn-xl mt-1 mb-1" href="#">Delete</a>
-            {% endif %}
+            <a>
+                <button class="btn btn-primary btn-xl mt-1 mb-1" type="submit">Save</button>
+            </a>
+<!--            <a class="btn btn-primary btn-xl mt-1 mb-1" type="submit">Save</a>-->
+<!--            {% if object.in_trash == False %}-->
+<!--                <a class="btn btn-danger btn-xl mt-1 mb-1" href="#">Move to trash</a>-->
+<!--            {% else %}-->
+<!--                <a class="btn btn-success btn-xl mt-1 mb-1" href="#">Restore</a>-->
+<!--                <a class="btn btn-danger btn-xl mt-1 mb-1" href="#">Delete</a>-->
+<!--            {% endif %}-->
+
+<!--                    <input type="submit" class="btn btn-danger btn-xl mt-1 mb-1" value="Move to trash" />-->
+                {% if object.in_trash == True %}
+                    <input type="submit" class="btn btn-success btn-xl mt-1 mb-1" value="Restore" />
+                    <a class="btn btn-danger btn-xl mt-1 mb-1" href="{% url 'file-delete' object.id %}">Delete</a>
+                {% endif %}
         </div>
     </form>
 </div>
