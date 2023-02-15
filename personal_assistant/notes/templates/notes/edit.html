@@ -1,0 +1,33 @@
+{% extends "notes/base.html" %} {% load extract_tags %} {% block content %}
+
+<h1>{{note.name}}</h1>
+<form action="{% url 'notes:alteration' note.id 'Δ'%}" method="POST">
+    {% csrf_token %}
+    <label for="description" class="">Note Description</label>
+    <textarea maxlength="4096" id="description" class="form-control" name="description">{{note.description}}</textarea>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<p>Time of creation: <kbd>{{note.created}}</kbd></p>
+<form action="{% url 'notes:alteration' note.id '+'%}" method="POST">
+    {% csrf_token %}
+    <div class="input-group">
+    <label class="input-group-text" for="tag_select">Tags</label>
+    <select class="multiselect form-control" multiple="multiple"
+            aria-label="multiple select example"
+            aria-describedby="basic-addon2" name="tags" id="tag_select" size="5"
+            data-max-options="5"
+            required>
+        {% for tag in tags %}
+        {% if tag.name in note.tags|tags %}
+        <option value="{{tag.name}}" selected="selected">{{tag.name}}</option>
+        {% else %}
+        <option value="{{tag.name}}">{{tag.name}}</option>>
+        {% endif %}
+        {% endfor %}
+    </select>
+    </div>
+    <p class="text-muted text-center"> You can select a maximum of 5 tags</p>
+    <button class="btn btn-sm btn-primary" type="submit">Save</button>
+
+</form>
+{% endblock %}

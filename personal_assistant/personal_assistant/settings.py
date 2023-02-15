@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "notes.apps.NotesConfig",
     "users.apps.UsersConfig",
     "django_apscheduler",
-    "django_bootstrap5",
 
 
 ]

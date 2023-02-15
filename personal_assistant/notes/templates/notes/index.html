@@ -1,11 +1,23 @@
 {% extends "notes/base.html" %}
-
+{% load extract_tags %}
+{% load delete_blank %}
+{% load static %}
 {% block content %}
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{% static 'notes/style.css' %}">
+<script type="module">
+      import Autogrow from "https://cdn.jsdelivr.net/npm/vanilla-autogrow@1.0.0/autogrow.min.js";
+      var inst = new Autogrow();
+
+
+</script>
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Create note
@@ -14,6 +26,18 @@
         Create tag
     </button>
 </div>
+<form method="POST" action="{% url 'notes:main' %}">
+    {% csrf_token %}
+    <div class="row height d-flex justify-content-center align-items-center">
+        <div class="col-md-8">
+            <div class="search">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control" placeholder="Search" name="question">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
 <form method="POST" action="{% url 'notes:note' %}">
     <div style="padding: 10px">
         <!-- Modal -->
@@ -33,7 +57,7 @@
                                 <span class="input-group-text" id="basic-addon1">Note name</span>
                                 <input type="text" class="form-control" required minlength="5"
                                        maxlength="64"
-                                       placeholder="1-64 symbols"
+                                       placeholder="5-64 symbols"
                                        aria-label="name"
                                        aria-describedby="basic-addon1" name="name">
                             </div>
@@ -44,28 +68,158 @@
                                               name="description" required minlength="10" maxlength="4096"
                                               placeholder="max 4096 symbols"></textarea>
                                 </div>
-                                <div style="padding-top: 10px">
-                                    <label class="input-group-text" for="tag_select"> Select tags:
-                                        <select class="form-select" multiple
-                                                aria-label="multiple select example"
-                                                aria-describedby="basic-addon2" id="tag_select" required>
-                                            {% for tag in tags %}
-                                            <option value="{{tag.name}}">{{tag.name}}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </label>
+                                <div class="input-group" style="padding-top: 10px">
+                                    <label class="input-group-text" for="tag_select">Tags</label>
+                                    <select class="multiselect form-control" multiple="multiple"
+                                            aria-label="multiple select example"
+                                            aria-describedby="basic-addon2" name="tags" id="tag_select" size="5"
+                                            data-max-options="5"
+                                            required>
+                                        {% for tag in tags %}
+                                        <option value="{{tag.name}}">{{tag.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <script type="text/javascript">
+                                     $(document).ready(function() {
+                                          var last_valid_selection = null;
+                                          $('#tag_select').change(function(event) {
+                                            if ($(this).val().length > 5) {
+                                              $(this).val(last_valid_selection);
+                                            } else {
+                                              last_valid_selection = $(this).val();
+                                            }
+                                          });
+                                        });
+
+
+                                    </script>
                                 </div>
+                                <p class="text-muted text-center"> You can select a maximum of 5 tags</p>
+                            </div>
                         </form>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Create note</button>
-                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Create note</button>
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </form>
+{% if by_tags %}
+{% if by_desc %}
+<h2>Matches in description: </h2>
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for note in by_desc %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">{{note.name}}</div>
+                    <div class="card-body">
+                        <p class="card-text text-truncate">{{note.description}}</p>
+                    </div>
+                    <ul class="list-group">
+                        {% for tag in note.tags|tags %}
+                        <li class="list-group-item text-center bg-body-secondary text-primary text-wrap fs-6">{{tag}}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                        data-bs-target="#viewNote" data-bs-whatever="{{note}}">Read full description
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteNote" data-bs-whatever="{{note}}">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if by_name %}
+<h2>Matches in note names: </h2>
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for note in by_name %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">{{note.name}}</div>
+                    <div class="card-body">
+                        <p class="card-text text-truncate">{{note.description}}</p>
+                    </div>
+                    <ul class="list-group">
+                        {% for tag in note.tags|tags %}
+                        <li class="list-group-item text-center bg-body-secondary text-primary text-wrap fs-6">{{tag}}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                        data-bs-target="#viewNote" data-bs-whatever="{{note}}">Read full description
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteNote" data-bs-whatever="{{note}}">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if by_tags|length > 1 %}
+<h2>Matches in note tags: </h2>
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for note in by_tags|delete_blank %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">{{note.name}}</div>
+                    <div class="card-body">
+                        <p class="card-text text-truncate">{{note.description}}</p>
+                    </div>
+                    <ul class="list-group">
+                        {% for tag in note.tags|tags %}
+                        <li class="list-group-item text-center bg-body-secondary text-primary text-wrap fs-6">{{tag}}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                        data-bs-target="#viewNote" data-bs-whatever="{{note}}">Read full description
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteNote" data-bs-whatever="{{note}}">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endif %}
 <form method="POST" action="{% url 'notes:tag' %}">
 
     <div style="padding: 10px">
@@ -85,12 +239,12 @@
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon2">Tag name</span>
                                 <input type="text" class="form-control" required minlength="3"
-                                       maxlength="64"
-                                       placeholder="1-64 symbols"
+                                       maxlength="128"
                                        aria-label="name"
                                        aria-describedby="basic-addon2" name="name">
                             </div>
                         </form>
+                        <p class="text-muted text-center"> You can create multiple tags by adding "," between them</p>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Create tag</button>
@@ -110,10 +264,20 @@
                     <div class="card-header">{{note.name}}</div>
                     <div class="card-body">
                         <p class="card-text text-truncate">{{note.description}}</p>
+                    </div>
+                    <ul class="list-group">
+                        {% for tag in note.tags|tags %}
+
+                        <li class="list-group-item text-center bg-body-secondary text-primary text-wrap fs-6">{{tag}}
+                        </li>
+
+                        {% endfor %}
+                    </ul>
+                    <div class="card-footer">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                        data-bs-target="#viewNote">View
+                                        data-bs-target="#viewNote" data-bs-whatever="{{note}}">Read full description
                                 </button>
                                 <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                                         data-bs-target="#deleteNote" data-bs-whatever="{{note}}">Delete
@@ -124,7 +288,6 @@
                 </div>
             </div>
             {% endfor %}
-
         </div>
     </div>
 </div>
@@ -135,21 +298,27 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="viewnotelabel">{{note.name}}</h1>
+                    <h1 class="modal-title fs-5" id="viewnotelabel">Name#</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-body">
-                        <p>{{note.description}}</p>
+
+                    <div class="input-group" style="position: relative">
+                        <span class="input-group-text">Note description</span>
+                        <textarea class="form-control"
+                                  name="description" style="min-height: 150px" readonly
+                        >Description#</textarea>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Yes</button>
-                    <button type="reset" class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                        OK
-                    </button>
+                    <div class="modal-footer">
+                        <a href="/notes" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-th-list"></span> Edit
+                        </a>
+                        <button type="reset" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -199,9 +368,26 @@ const recipient = button.getAttribute('data-bs-whatever').split("♂")
 const noteid = recipient[0]
 var act = "/notes/delete/"
 document.getElementById('deleteForm').action = act + noteid
+})
 
 
 
+</script>
+<script>
+const viewModal = document.getElementById('viewNote')
+viewModal.addEventListener('show.bs.modal', event => {
+// Button that triggered the modal
+const button = event.relatedTarget
+// Extract info from data-bs-* attributes
+const recipient = button.getAttribute('data-bs-whatever').split("♂")
+console.log(recipient)
+// Update the modal's content.
+const modalTitle = viewModal.querySelector('.modal-title')
+const modalBodyInput = viewModal.querySelector('.modal-body textarea')
+const modalBtn = viewModal.querySelector('.modal-footer a')
+modalBtn.href = "/notes/edit/" + recipient[0]
+modalTitle.textContent = recipient[1]
+modalBodyInput.value = recipient[2]
 })
 
 
